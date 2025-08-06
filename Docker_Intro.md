@@ -95,7 +95,12 @@ Ubuntu, RedHat have a common kernel; the difference is only in the Shell compone
 
 A **Virtual Machine** is the same as a physical machine,  
 So each virtual machine also includes its own kernel and shell.
+<img width="542" height="260" alt="image" src="https://github.com/user-attachments/assets/c22e153d-bdac-45ea-a3f1-c57961f26a6e" /><img width="373" height="374" alt="image" src="https://github.com/user-attachments/assets/612cfadf-d325-4d52-b7f5-434de4cd632b" />
+<img width="542" height="423" alt="image" src="https://github.com/user-attachments/assets/e62f36b5-ce13-4231-8896-c020b417e127" />
 
+
+
+   
 ---
 
 **Scenario:**  
