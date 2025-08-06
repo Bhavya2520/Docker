@@ -1,4 +1,5 @@
 ## Architecture of Docker
+<img width="1009" height="527" alt="image" src="https://github.com/user-attachments/assets/f80ce38d-ee7d-4ac3-9bce-5569a0979760" />
 
 ### Docker Host  
 **Docker Host** = a machine in which we are installing Docker daemon. It can be:  
