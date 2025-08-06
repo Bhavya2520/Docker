@@ -83,3 +83,77 @@ Can’t replace VMs if different OS kernels are needed.
 Containers share the same OS kernel, increasing risk if misconfigured.  
 8.	Persistent Storage is Tricky  
 Data can be lost if volumes are not properly managed.  
+
+
+## Why Docker is Lightweight?
+
+The OS has two main components:  
+1) **Kernel** – talks with hardware  
+2) **Shell** – two types: either GUI-based (Windows) or CLI-based (Linux)  
+
+Ubuntu, RedHat have a common kernel; the difference is only in the Shell component.
+
+A **Virtual Machine** is the same as a physical machine,  
+So each virtual machine also includes its own kernel and shell.
+
+---
+
+**Scenario:**  
+You have a Docker image of Ubuntu and your host OS is Windows.  
+We’ve already stated that a Docker container has **no kernel**.  
+So how is the Ubuntu image able to run using the Windows kernel?
+
+---
+
+### 🧠 Explanation:
+A Docker container uses the **kernel of the host OS**.
+
+But the Ubuntu image needs a **Linux kernel**, and your host is **Windows**.
+
+So, Docker Desktop (on Windows) starts a **lightweight Linux VM** using **WSL2 (Windows Subsystem for Linux 2)** or **Hyper-V**.
+
+The Ubuntu container then runs **inside that Linux VM**, using the **Linux kernel**.
+
+But in the case of Docker containers, we use the **kernel of the main operating system**,  
+and each container only contains the **shell**,  
+so the **container becomes lightweight**.
+
+---
+
+### Summary:
+
+- **Virtual Machine** = shares hardware (hardware virtualization)  
+- **Containers** = share kernel (OS virtualization)  
+- **Virtual Machine** size: in **GBs**  
+- **Docker**: within **MBs**
+
+## Virtual Machine vs Container
+
+### Virtual Machine
+
+A **hypervisor** is used to run virtual machines.  
+Containers don’t need a hypervisor directly — but on systems like **Windows** or **macOS**, Docker uses a hypervisor (via **WSL2** or **Hyper-V**) to create a Linux VM, so containers can access a Linux kernel.
+
+There are many hypervisors available in the market.
+
+- **VMware hypervisor** is known as **ESXi**.  
+- Similarly, **Microsoft** has also developed a hypervisor: **Hyper-V**
+
+---
+
+### 🧠 Virtual Machine vs Container
+
+| Feature | 🖥️ Virtual Machine (VM) | 📦 Container (Docker, etc.) |
+|--------|--------------------------|------------------------------|
+| **Isolation** | Fully isolated with own OS | Isolated but share host OS kernel |
+| **OS Requirement** | Has its own full OS (guest OS) | Shares the host OS kernel |
+| **Startup Time** | Slow (minutes) | Fast (seconds) |
+| **Resource Usage** | Heavy (more RAM, CPU, storage) | Lightweight (uses fewer resources) |
+| **Performance** | Slower due to full OS overhead | Near-native performance |
+| **Storage Size** | Large (several GBs per VM) | Small (MBs to hundreds of MBs) |
+| **Portability** | Less portable (hardware/OS dependencies) | Highly portable across environments |
+| **Boot Time** | Longer (must boot OS) | Very fast (no full OS boot) |
+| **Hypervisor Needed** | ✅ Yes (e.g., VirtualBox, Hyper-V, VMware) | ❌ No (uses container runtime like Docker Engine) |
+| **Use Cases** | Run multiple OSs, legacy systems, kernel-level tasks | Microservices, app isolation, fast deployments |
+| **Security** | Stronger isolation (separate OS) | Weaker (shared kernel, needs extra hardening) |
+| **Example Technologies** | VMware, VirtualBox, Hyper-V, KVM | Docker, containerd, Podman |
