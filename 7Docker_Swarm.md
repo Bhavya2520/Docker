@@ -33,101 +33,111 @@ Before orchestration tools, running containers in production was tricky:
 > Docker Swarm was introduced to make containerized applications scalable, fault-tolerant, and easier to manage in production without needing to learn a completely new tool.
 
 
-# 🚀 Docker Swarm Setup Guide
+# Docker Swarm Setup & Commands
 
 ## 1️⃣ Pre-requirements
-
 - Install **Docker CE** on at least **two machines** (can be physical machines, VMs, or EC2 instances).
 - Enable **Docker Swarm mode** on the **manager node**.
-- Ensure machines can communicate over the following **TCP ports**:
-
-  | Port | Purpose               |
-  |------|------------------------|
-  | 2377 | Cluster management     |
-  | 7946 | Node communication     |
-  | 4789 | Overlay networking     |
+- Ensure the machines can communicate over TCP ports:
+  - **2377** → Cluster management
+  - **7946** → Node communication
+  - **4789** → Overlay networking
 
 ---
 
 ## 2️⃣ Initialize the Swarm
-
-Run this on the **first node** (this will be the **manager node**):
+Run this on the **first node** (manager node):
 
 ```bash
 docker swarm init --advertise-addr <MANAGER-IP>
-Example:
+```
 
-bash
-Copy
-Edit
+**Example:**
+```bash
 docker swarm init --advertise-addr 192.168.1.100
-This command will output a docker swarm join command — copy it, you’ll use it for worker nodes.
+```
+This will output a `docker swarm join` command — copy it for worker nodes.
 
-3️⃣ Join Worker Nodes to the Swarm
-On each worker node, run the join command you got from Step 2:
+---
 
-bash
-Copy
-Edit
+## 3️⃣ Join Worker Nodes to the Swarm
+On the **worker node(s)**, run the join command from Step 2:
+
+```bash
 docker swarm join --token SWMTKN-1-xyz123abc... 192.168.1.100:2377
-192.168.1.100 is your manager IP address.
+```
+> `192.168.1.100` is your **manager IP**.
 
-4️⃣ Swarm Status Commands
-Command	Purpose
-docker node ls	Lists all nodes in the swarm (manager only)
-docker info	Shows if the node is part of a swarm and its role
-docker swarm inspect	Displays details of the swarm configuration
-docker swarm join-token manager	Shows token to add a manager node
-docker swarm join-token worker	Shows token to add a worker node
+---
 
-Example:
+## 4️⃣ Swarm Status Commands
 
-bash
-Copy
-Edit
+| Command | Purpose |
+|---------|---------|
+| `docker node ls` | Lists all nodes in the swarm (manager only) |
+| `docker info` | Shows if a node is part of a swarm and its role |
+| `docker swarm inspect` | Shows details of the swarm configuration |
+| `docker swarm join-token manager` | Shows the token to add another manager |
+| `docker swarm join-token worker` | Shows the token to add another worker |
+
+**Example:**
+```bash
 docker node ls
-5️⃣ Deploy a Service in Swarm
-A service in Swarm is like a running application that can scale across nodes.
+```
 
-Example: Create an nginx service with 3 replicas:
+---
 
-bash
-Copy
-Edit
+## 5️⃣ Deploy a Service in Swarm
+A **service** in Swarm is like a running application that can scale across nodes.
+
+**Example:** Create an nginx service with 3 replicas:
+```bash
 docker service create --name myweb --replicas 3 -p 8080:80 nginx
-6️⃣ Service Management Commands
-Command	Purpose
-docker service ls	List all services in the swarm
-docker service ps <service-name>	Show running tasks/containers for a service
-docker service scale myweb=5	Scale a service to 5 replicas
-docker service rm myweb	Remove the service
+```
 
-Example:
+---
 
-bash
-Copy
-Edit
+## 6️⃣ Service Management Commands
+
+| Command | Purpose |
+|---------|---------|
+| `docker service ls` | List all services in the swarm |
+| `docker service ps <service-name>` | Show tasks/containers running for a service |
+| `docker service scale myweb=5` | Scale a service to 5 replicas |
+| `docker service rm myweb` | Remove a service |
+
+**Example:**
+```bash
 docker service ls
 docker service ps myweb
-7️⃣ Inspect Service / Node
-bash
-Copy
-Edit
+```
+
+---
+
+## 7️⃣ Inspect Service/Node
+```bash
 docker service inspect myweb
 docker node inspect <node-id>
-8️⃣ Remove Nodes or Leave Swarm
-On a worker node:
+```
 
-bash
-Copy
-Edit
+---
+
+## 8️⃣ Remove Nodes or Leave Swarm
+On a **worker node**:
+```bash
 docker swarm leave
-On a manager node:
-
-bash
-Copy
-Edit
+```
+On a **manager node**:
+```bash
 docker swarm leave --force
-vbnet
-Copy
-Edit
+```
+
+---
+
+## ✅ Suggested Practice Flow (Internship Task)
+1. Initialize Swarm on one node.
+2. Join at least **1 worker node**.
+3. Check `docker node ls` and `docker swarm inspect`.
+4. Create a service and list it.
+5. Scale the service and check replicas with `docker service ps`.
+6. Remove the service and nodes.
