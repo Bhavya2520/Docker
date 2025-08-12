@@ -130,14 +130,4 @@ services:
 
 ---
 
-## ✅ How to Complete the Internship Task
-1. Learn YAML basics (spacing matters — 2 spaces for indentation).
-2. Create separate folders for:
-   - **Databases** (e.g., MySQL, MongoDB)
-   - **Node.js REST API**
-   - **React app**
-   - **Laravel app**
-3. Write a `docker-compose.yml` for each project.
-4. Run `docker-compose up` and test.
 
----
